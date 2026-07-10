@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Live in 13 Days and Die in 13 Different Ways</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --cream: #faf8f5;
+            --text: #2c2c2c;
+            --accent: #3c5a4e;
+            --light: #e8e6e3;
+        }
+        
+        body {
+            font-family: 'Georgia', 'Garamond', serif;
+            background: var(--cream);
+            color: var(--text);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .book-container {
+            width: 100%;
+            max-width: 900px;
+            aspect-ratio: 2 / 3;
+            perspective: 1200px;
+            position: relative;
+        }
+        
+        .book {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            background: var(--cream);
+            border: 1px solid var(--light);
+        }
+        
+        .pages-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        .page-left, .page-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 50px;
+            overflow: hidden;
+            background: var(--cream);
+            border-right: 1px solid var(--light);
+            position: relative;
+            transform-origin: right center;
+            transform-style: preserve-3d;
+        }
+        
+        .page-right {
+            border-right: none;
+            border-left: 1px solid var(--light);
+            transform-origin: left center;
+        }
+        
+        .page-left.turning {
+            animation: turnLeft 0.6s ease-in-out forwards;
+        }
+        
+        .page-right.turning {
+            animation: turnRight 0.6s ease-in-out forwards;
+        }
+        
+        @keyframes turnLeft {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(-180deg); }
+        }
+        
+        @keyframes turnRight {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(180deg); }
+        }
+        
+        .page-content {
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: fadeIn 0.4s ease-in-out 0.3s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .cover-title {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: normal;
+            letter-spacing: 0.02em;
+            line-height: 1.2;
+            margin-bottom: 40px;
+            font-family: 'Newsreader', serif;
+        }
+        
+        .cover-subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-weight: normal;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        
+        .epigraph-text {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-style: italic;
+            line-height: 1.8;
+            max-width: 85%;
+            color: #5c5c5c;
+            margin-bottom: 30px;
+            white-space: pre-wrap;
+        }
+        
+        .epigraph-note {
+            font-size: 0.85rem;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
+        
+        .poem-eyebrow {
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            font-weight: normal;
+        }
+        
+        .poem-title {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: normal;
+            margin-bottom: 30px;
+            letter-spacing: 0.01em;
+        }
+        
+        .poem-body {
+            font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+            line-height: 1.75;
+            color: #3a3a3a;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            text-align: left;
+            max-height: 65%;
+            overflow-y: auto;
+        }
+        
+        .poem-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .poem-body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .poem-body::-webkit-scrollbar-thumb {
+            background: var(--light);
+            border-radius: 2px;
+        }
+        
+        .doodle-container {
+            width: 100px;
+            height: 100px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .doodle-svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--accent);
+            stroke-width: 1.2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        
+        .divider {
+            border-bottom: 1px solid var(--light);
+            width: 60px;
+            margin: 40px 0;
+        }
+        
+        .divider-title {
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            font-weight: normal;
+            color: var(--accent);
+            letter-spacing: 0.02em;
+        }
+        
+        .colophon {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #6c6c6c;
+        }
+        
+        .colophon-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .colophon-sub {
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .nav-button {
+            background: var(--accent);
+            color: var(--cream);
+            border: none;
+            padding: 10px 18px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        .nav-button:hover:not(:disabled) {
+            opacity: 0.8;
+        }
+        
+        .nav-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .page-counter {
+            font-size: 0.85rem;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+            min-width: 80px;
+            text-align: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        .hint {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 0.7rem;
+            color: var(--light);
+            letter-spacing: 0.05em;
+            pointer-events: none;
+        }
+        
+        @media (max-width: 768px) {
+            .page-left, .page-right {
+                padding: 40px 30px;
+            }
+            
+            .poem-eyebrow {
+                font-size: 0.7rem;
+            }
+            
+            .poem-title {
+                margin-bottom: 20px;
+            }
+            
+            .doodle-container {
+                width: 80px;
+                height: 80px;
+                margin: 15px 0;
+            }
+            
+            .controls {
+                bottom: 20px;
+                gap: 15px;
+            }
+            
+            .nav-button {
+                padding: 8px 14px;
+                font-size: 0.75rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .pages-wrapper {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-right {
+                display: none;
+            }
+            
+            .page-left {
+                padding: 30px 25px;
+                border-right: none;
+            }
+            
+            .page-left.turning {
+                animation: slideLeft 0.5s ease-in-out forwards;
+            }
+            
+            @keyframes slideLeft {
+                0% { transform: translateX(0); opacity: 1; }
+                100% { transform: translateX(-100%); opacity: 0; }
+            }
+            
+            .page-counter {
+                min-width: 60px;
+                font-size: 0.75rem;
+            }
+            
+            .hint {
+                font-size: 0.65rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="book-container">
+        <div class="book">
+            <div class="pages-wrapper">
+                <div class="page-left" id="pageLeft"></div>
+                <div class="page-right" id="pageRight"></div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="nav-button" id="prevBtn">← Prev</button>
+            <span class="page-counter"><span id="currentPage">1</span> / <span id="totalPages">–</span></span>
+            <button class="nav-button" id="nextBtn">Next →</button>
+        </div>
+        
+        <div class="hint">← → or arrow keys</div>
+    </div>
+
+    <script>
+        let currentPageIndex = 0;
+        let pages = [];
+        let doodleData = {};
+
+        // Load data
+        Promise.all([
+            fetch('data.json').then(r => r.json()),
+        ]).then(([data]) => {
+            pages = data.pages;
+            doodleData = data.doodles;
+            document.getElementById('totalPages').textContent = pages.length;
+            renderPage(0);
+        }).catch(e => {
+            console.error('Error loading data:', e);
+            document.getElementById('pageLeft').innerHTML = '<p>Error loading book. Check that data.json is in the same directory.</p>';
+        });
+
+        function renderPage(index) {
+            if (index < 0 || index >= pages.length) return;
+
+            const leftEl = document.getElementById('pageLeft');
+            const rightEl = document.getElementById('pageRight');
+
+            leftEl.innerHTML = '';
+            rightEl.innerHTML = '';
+
+            const leftIdx = index;
+            const rightIdx = index + 1;
+
+            if (leftIdx < pages.length) {
+                leftEl.innerHTML = createPageHTML(pages[leftIdx]);
+            }
+
+            if (rightIdx < pages.length) {
+                rightEl.innerHTML = createPageHTML(pages[rightIdx]);
+            }
+
+            document.getElementById('currentPage').textContent = leftIdx + 1;
+            document.getElementById('prevBtn').disabled = leftIdx === 0;
+            document.getElementById('nextBtn').disabled = rightIdx >= pages.length;
+        }
+
+        function createPageHTML(page) {
+            const container = document.createElement('div');
+            container.className = 'page-content';
+
+            switch (page.kind) {
+                case 'cover':
+                    container.innerHTML = `
+                        <h1 class="cover-title">How to Live in 13 Days<br/>and Die in 13 Different Ways</h1>
+                        <p class="cover-subtitle">Anurag Sharma</p>
+                    `;
+                    break;
+
+                case 'epigraph':
+                    container.innerHTML = `
+                        <p class="epigraph-text">${escapeHtml(page.body)}</p>
+                        <p class="epigraph-note">${page.note}</p>
+                    `;
+                    break;
+
+                case 'poem':
+                case 'essay':
+                    const doodleSvg = page.doodle && doodleData[page.doodle] ? `
+                        <div class="doodle-container">
+                            <svg class="doodle-svg" viewBox="0 0 100 100">
+                                ${doodleData[page.doodle]}
+                            </svg>
+                        </div>
+                    ` : '';
+
+                    container.innerHTML = `
+                        ${page.eyebrow ? `<div class="poem-eyebrow">${page.eyebrow}</div>` : ''}
+                        <h2 class="poem-title">${escapeHtml(page.title)}</h2>
+                        ${doodleSvg}
+                        <div class="poem-body">${escapeHtml(page.body)}</div>
+                    `;
+                    break;
+
+                case 'divider':
+                    container.innerHTML = `
+                        <div class="divider"></div>
+                        <h2 class="divider-title">${escapeHtml(page.title)}</h2>
+                        <div class="divider"></div>
+                    `;
+                    break;
+
+                case 'colophon':
+                    container.innerHTML = `
+                        <div class="colophon">
+                            <p class="colophon-title">${escapeHtml(page.title)}</p>
+                            <p class="colophon-sub">${page.sub}</p>
+                        </div>
+                    `;
+                    break;
+            }
+
+            return container.innerHTML;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function turnPage(forward) {
+            const leftEl = document.getElementById('pageLeft');
+            const rightEl = document.getElementById('pageRight');
+
+            leftEl.classList.add('turning');
+            rightEl.classList.add('turning');
+
+            setTimeout(() => {
+                if (forward) {
+                    currentPageIndex += 2;
+                } else {
+                    currentPageIndex -= 2;
+                }
+                currentPageIndex = Math.max(0, Math.min(currentPageIndex, pages.length - 1));
+
+                leftEl.classList.remove('turning');
+                rightEl.classList.remove('turning');
+
+                renderPage(currentPageIndex);
+            }, 600);
+        }
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentPageIndex > 0) turnPage(false);
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentPageIndex + 2 < pages.length) turnPage(true);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+                if (currentPageIndex > 0) turnPage(false);
+            } else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+                if (currentPageIndex + 2 < pages.length) turnPage(true);
+            }
+        });
+    </script>
+</body>
+</html>
