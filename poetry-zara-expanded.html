@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Live in 13 Days and Die in 13 Different Ways</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --dark-gray: #1a1a1a;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 80px;
+            background: var(--black);
+            top: 60px;
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 0 40px;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--dark-gray);
+            margin-bottom: 80px;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Doodle Accents */
+        .doodle {
+            position: absolute;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .doodle-small {
+            width: 40px;
+            height: 40px;
+        }
+
+        .doodle-tiny {
+            width: 20px;
+            height: 20px;
+            opacity: 0.15;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 120px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            margin-bottom: 80px;
+            text-align: center;
+        }
+
+        .poem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 60px;
+            margin-bottom: 100px;
+        }
+
+        .poem-card {
+            position: relative;
+            padding: 40px;
+            border: 1px solid var(--light-gray);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .poem-card:hover {
+            border-color: var(--black);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .poem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--black);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+
+        .poem-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .poem-number {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--dark-gray);
+            margin-bottom: 20px;
+        }
+
+        .poem-title {
+            font-size: 1.4rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .poem-excerpt {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--dark-gray);
+            flex-grow: 1;
+            margin-bottom: 20px;
+            max-height: 100px;
+            overflow: hidden;
+        }
+
+        .poem-body {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--dark-gray);
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .poem-card.expanded .poem-excerpt {
+            display: none;
+        }
+
+        .poem-card.expanded .poem-body {
+            display: block;
+        }
+
+        .poem-card.expanded {
+            min-height: auto;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .read-more {
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            align-self: flex-start;
+            position: relative;
+            display: inline-block;
+        }
+
+        .read-more::after {
+            content: '→';
+            margin-left: 8px;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .poem-card:hover .read-more::after {
+            transform: translateX(4px);
+        }
+
+        .poem-card.expanded .read-more {
+            align-self: flex-end;
+        }
+
+        .poem-card.expanded .read-more::after {
+            content: '←';
+        }
+
+        /* About Section */
+        .about {
+            background: var(--light-gray);
+            padding: 120px 40px;
+        }
+
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .about h2 {
+            font-size: 2.2rem;
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            margin-bottom: 40px;
+        }
+
+        .about p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: var(--dark-gray);
+        }
+
+        .about-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .meta-item {
+            border-top: 1px solid var(--black);
+            padding-top: 20px;
+        }
+
+        .meta-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            color: var(--dark-gray);
+        }
+
+        .meta-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Footer / Contact */
+        footer {
+            background: var(--black);
+            color: var(--white);
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        footer h3 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            margin-bottom: 30px;
+        }
+
+        footer p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+
+        .email-link {
+            font-size: 1.1rem;
+            color: var(--white);
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--white);
+            padding-bottom: 4px;
+            transition: opacity 0.3s ease;
+        }
+
+        .email-link:hover {
+            opacity: 0.7;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .gallery,
+            .about {
+                padding: 60px 20px;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+                margin-bottom: 50px;
+            }
+
+            .poem-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .about-meta {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                padding: 60px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero -->
+    <section class="hero">
+        <svg class="doodle doodle-small" style="top: 80px; left: 60px;" viewBox="0 0 100 100">
+            <path d="M50 20 Q70 20 70 40 Q70 60 50 60 Q30 60 30 40 Q30 20 50 20" stroke="black" stroke-width="1" fill="none"/>
+        </svg>
+        
+        <div class="hero-content">
+            <h1>How to Live in 13 Days<br/>and Die in 13 Different Ways</h1>
+            <p class="hero-subtitle">A Collection of Poetry</p>
+        </div>
+
+        <svg class="doodle doodle-tiny" style="bottom: 200px; right: 100px;" viewBox="0 0 100 100">
+            <line x1="10" y1="50" x2="90" y2="50" stroke="black" stroke-width="1"/>
+            <line x1="50" y1="10" x2="50" y2="90" stroke="black" stroke-width="1"/>
+        </svg>
+
+        <span class="scroll-hint">Scroll to explore</span>
+    </section>
+
+    <!-- Gallery -->
+    <section class="gallery">
+        <h2 class="section-title">All 21 Poems + Essay</h2>
+        <div class="poem-grid" id="poemGrid"></div>
+    </section>
+
+    <!-- About -->
+    <section class="about">
+        <div class="about-content">
+            <h2>About the Collection</h2>
+            <p>
+                <em>How to Live in 13 Days and Die in 13 Different Ways</em> is a collection of 21 poems exploring themes of grief, longing, and survival. Built as a reverse-chronological arc, the work traces a journey from despair toward resilience, capturing the complexity of human emotion through precise, raw language.
+            </p>
+            <p>
+                Each poem exists as a standalone meditation while contributing to a larger narrative. The collection concludes with a prose essay examining the relationship between the artist and their art—a philosophical inquiry into how we create meaning in the face of loss.
+            </p>
+
+            <div class="about-meta">
+                <div class="meta-item">
+                    <div class="meta-label">Author</div>
+                    <div class="meta-value">Anurag Sharma</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Year</div>
+                    <div class="meta-value">2026</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-label">Total</div>
+                    <div class="meta-value">21 Poems + 1 Essay</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <h3>Get in Touch</h3>
+            <p>For inquiries, collaboration, or to share your thoughts on the collection:</p>
+            <a href="mailto:anuragsharma.as999@gmail.com" class="email-link">anuragsharma.as999@gmail.com</a>
+            <p style="margin-top: 40px; font-size: 0.85rem; color: #999;">© 2026. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const poems = [
+            {
+                number: "Prologue",
+                title: "For Me",
+                excerpt: "A positive outlook you crave, a little bit of grace, can you save?",
+                body: "A positive outlook you crave,\nA little bit of grace, can you save?\nTired all along,\nWhy the poker face?\nA laugh so fake,\nWith a body and soul so brave\nI wonder if I will ever be saved.\n\nA misery in my mind,\nA hope with a heart closed in shrine.\nDays ago, you were still you…\nEver wonder why the true ones are so few?\nI wonder, did you ever grow?\n\nWait, wait,\nand the pain might fade away.\nAlong the way,\nmaybe someone will stop,\nand you won't fall from the weak rope."
+            },
+            {
+                number: "Prologue",
+                title: "For God",
+                excerpt: "Surrounded by high tides, you wonder if I survive.",
+                body: "Surrounded by high tides,\nYou wonder if I survive.\nMy disbelief shook you\nFor such a task, how much cruelty it took you.\n\nEarn my respect,\nI shall ask.\nA life must not be wasted in vain.\nI don't ask the impossible,\nYet I feel exiled,\nLiving in disdain.\n\nAnswer, my body shivers.\nI've been sitting in the rain,\nStill holding hope\nWhile walking blindly on a fragile rope.\n\nTry me as much as you want;\nI have the guts that others don't.\nThe wait is never over\nBut I'll endure, even slower."
+            },
+            {
+                number: "Prologue",
+                title: "For You",
+                excerpt: "A random instance you came, a bliss for a man living in shame.",
+                body: "A random instance you came,\na bliss for a man living in shame.\nConnecting so long,\nat first it felt wrong.\nBut as we grew, it turned real, and true.\nI fell — you held yourself strong.\nAlmost like a sad song,\nlyrics sharp as heartbreak.\nI stopped, for my own sake.\nYou were still you, still there.\nAnd I fell again,\nwith no conscience left to think of my gain.\n\nYou fell for someone else,\nand I was restless.\nBut when my fuel was gone, and I stopped\nyou, a shimmer of hope, came back.\nI tried to stop myself from falling again.\nNow I'm in a pit of flowers,\nand there is only you.\nScared to my core,\nI fell for your lore.\nMercy, I beg, please don't go.\nStay for life, and we shall grow.\n\nA life so pretty, with no time for despair.\nA modern melody of love,\nwith everything aside, and you above."
+            },
+            {
+                number: "I",
+                title: "Warzone",
+                excerpt: "Unarmed in a warzone I stand with my head down, surrounded by hounds.",
+                body: "Unarmed in a warzone\nI stand with my head down,\nSurrounded by hounds,\nCursed by the wind's sound.\n\nBefore the sun slips,\nI beg for one more dream,\nBefore I drown in the blue\nOne last glimpse of you.\n\nUnable to name what is reality,\nThe dream grows sacred in its fragility.\nAnd it breaks just as I knew it would.\n\nNow I stand under a merciless gaze,\nFamiliarity running through my veins,\nFebruary settling in my bones again.\n\nI fall this time,\nWish I forget to write\nTo leave it behind in lines,\nTo survive in rhyme."
+            },
+            {
+                number: "II",
+                title: "Wrong",
+                excerpt: "Right into the wrong, I stepped outside my identity.",
+                body: "Right into the wrong,\nI stepped outside my identity,\nwhere do I belong?\n\nI kept my thoughts on paper,\nthen burned them in rage.\nNow what is left to write,\nwhen all I see is dark with blinded sight?\n\nOut of place, I hide,\nbreathing without pride.\nThe blue you see in hindsight\npulls me under every night.\n\nI jumped into a pool of memory,\nno saving left to do.\nDeep waters, and I breathe just fine,\nbut how long before I cross my own line.\n\nAnd maybe rumors linger true,\nI'm caught in rumination,\ntethered still to you."
+            },
+            {
+                number: "III",
+                title: "Petals",
+                excerpt: "Dazzled by the redness of petals, an emptiness I couldn't settle.",
+                body: "Dazzled by the redness of petals,\nAn emptiness I couldn't settle.\nSo I drift where tall grass bends,\nFar from voices that let me pretend.\n\nDepth in shadows, sorrow still,\nI meet my gaze against my will.\nScared by the redness of petals,\nI stay away from flowers,\nHoping to get lost in dusty showers.\n\nAdrift from my own identity,\nafraid of light and its shine —\nhow do I give meaning to this life?\n\nSand that I touch,\nflooded with memories,\na mental loop keeps me stuck.\n\nFlowers die,\nleaving without notice —\nno answer to my whys."
+            },
+            {
+                number: "IV",
+                title: "Serious Delusion",
+                excerpt: "Serious delusion, I talk to plants, like I am still holding you in my hands.",
+                body: "Serious delusion,\nI talk to plants,\nLike I am still holding you in my hands.\nRepeat your name in empty rooms,\nWatch it fade like lovely afternoons.\n\nI talk to my cat,\nOutrunning my own life,\nShe is scared to see me playing with knives.\nBut what good comes out of this red.\nI don't regret what I said —\nYet why am I addicted to see my skin turn blue,\nSedative state, all I see is you.\n\nSerious delusion,\nHoping for clarity.\nDying to get rid of all confusion,\nI am losing my sanity!\nRumination of you on repeat,\nEvery thought leads to grief.\nCraving for the familiarity,\nMaybe I am losing gravity.\n\nSerious delusion,\nI talk in my sleep,\nNo, I don't shed tears,\nYet I weep,\nI see red and blue all over,\nIt did happen before,\nGot out of it cause I wasn't sure,\nNow, it has happened again —\nGotten out of control\nAnd it feels like a war,\nWhom do I kill,\nWhat pill do I take,\nFor goodness sake.\n\nSerious delusion,\nI talk to you in my sleep,\nListening to your voice on repeat.\n\nSerious delusion,\nRunning out of tears,\nNothing left to weep."
+            },
+            {
+                number: "V",
+                title: "Embedded",
+                excerpt: "You are embedded in my heart and brain, no matter how I try, it ends in vain.",
+                body: "You are embedded in my heart and brain,\nNo matter how I try, it ends in vain.\nI cannot bring myself to feel disdain,\nThese pulling feelings drag me back again.\n\nI hide a few, pretend I'm still okay,\nBut something in me always slips your way.\nWho am I beneath this strange display?\nWhat brought me here, what was I meant to say?\n\nWith every breath, a memory escapes,\nYet countless more refuse to lose their shapes.\nThis emptiness is more than what it seems,\nIt echoes you in fragments and in dreams.\n\nIt's not just sorrow filling up my chest,\nIt's you returning when I need you least.\nAnd still I wait, as if you would return without obligation,\nVeins running out of blood, life losing its patience."
+            },
+            {
+                number: "VI",
+                title: "A Curse of Writing",
+                excerpt: "A curse of writing you, I find you in every word.",
+                body: "A curse of writing you,\nI find you in every word.\nA rhythm of feelings —\nthe more I write,\nthe more I delay healing.\n\nEvery verse I write\nsomehow returns to you;\nit says I miss you,\nbut I don't wish that you do.\n\nA craving that eats me hollow,\nlike a wolf under a full moon —\nI howl.\n\nI prefer penance over acceptance,\nfor when it's about you,\nI can never finish the sentence.\n\nWho knows if there'll be a period —\nor if this just goes on,\nwords: some serious and some inferior."
+            },
+            {
+                number: "VII",
+                title: "Waterfalls",
+                excerpt: "Down waterfalls, the stone is worn away, each drop inscribes what time cannot delay.",
+                body: "Down waterfalls, the stone is worn away,\nEach drop inscribes what time cannot delay;\nThe leaves, instead, embrace the silver spray,\nAnd hold each trembling gift that comes their way.\n\nYet in the storm, their nature turns to fight,\nThey rise as one, accusing with their might;\nNo trace of calm, no memory of light,\nBut sharpened words that pierce the endless night.\n\nThe sky looks on and pities what they grow,\nA quiet grief for all it comes to know;\nIt watches change unfold in silent flow,\nAs kindness fades beneath resentment's glow.\n\nThe witness drowns, yet still recalls the rain,\nIt speaks in drops that echo loss and pain;\nThough all may turn and cast their faults again,\nThe rain remembers, time repeats the stain."
+            },
+            {
+                number: "VIII",
+                title: "These Flowers",
+                excerpt: "These flowers don't speak to me, the way they used to.",
+                body: "These flowers don't speak to me,\nThe way they used to,\nAt my every glimpse,\nThey start to wither,\nAs if I am autumn,\nAnd they ought to die in drought.\n\nThese flowers don't speak to me the way they used to,\nAt every glance, petals wither away,\nAnd the remaining are very few,\nI think I should accept their death,\nBut leaving is something I am not used to."
+            },
+            {
+                number: "IX",
+                title: "Within Madness",
+                excerpt: "Within madness, I stand with stillness, with water in one and sand in another hand.",
+                body: "Within madness, I stand with stillness,\nWith water in one and sand in another hand.\nAll slipping away, lost as my motherland.\nDeemed to be something, my room is filled with darkness.\n\nIn a corner, you will find me with nothing and everything at once.\nAll in, I had lost all my chips in poker.\nSanity within me has lost its cause, as if it has spiritually failed.\nI sit with my thoughts in temples,\nWhile my hand trembles.\nFor if there is a God, He must question what I gambled.\n\nAt 2:00 a.m., find me wondering about tomorrow.\nA past with hauntingly beautiful memories drowning in today's pain,\nA feeling of standing in pouring rain —\nI hover around my own heart,\nSo I ask myself:\nHow do I put it in simple words what hurts?"
+            },
+            {
+                number: "X",
+                title: "Until When",
+                excerpt: "Until when will you run, aren't you tired of all the materialist things?",
+                body: "Until when will you run,\nAren't you tired\nOf all the materialist things?\nAll the party people\nYou have surrounded yourself by —\nDo they give you space?\nI know I said life isn't a race\nBut you can't just run forever.\n\nOn the shore, looking at the sunset,\nI am standing in rain,\nMy skin is wet.\nWho knows if tears would make me fall for you\nOr make me fall apart.\n\nUntil when will you run,\nFrom things that just settle down in heart forever,\nYou were clever, what happened to you,\nWhere did you run to?\n\nCome back,\nMy arms are tired.\nI don't hope for you to come back\nBut I hope you don't get lost with the wind of today.\nWith a dying melody, which is hollow,\nI leave you to tomorrow."
+            },
+            {
+                number: "XI",
+                title: "Fragile",
+                excerpt: "Words, so fragile and broken, actions, so stoic and hollow.",
+                body: "Words, so fragile and broken,\nActions, so stoic and hollow.\nBetween them, the lines blur,\nWho knows what I feel?\nWho knows what I did.\n\nIn an abyss of words,\nI am astray, I have lost my way.\nWho knows where I am,\nWho knows where home is,\nand how far.\n\nEvery dusk, drowning in words,\nLooking for something to hold,\nBut which shore am I looking for?\nThe one where I will turn into ash,\nOr the one where I can lose my memories in a flash.\n\nWho knows, where is my mind,\nWho knows, where is my heart,\nWho knows, where is my soul."
+            },
+            {
+                number: "XII",
+                title: "Masquerade",
+                excerpt: "Not obvious — it lives hauntingly inside, a quiet plague beneath the skin.",
+                body: "Not obvious —\nit lives hauntingly inside,\na quiet plague beneath the skin.\nAll the party people\ncan't see behind the mask,\nneither can I.\n\nA walk down a downtown aisle,\nfaces lit, watching —\nmy expression falters.\nAll the party people\nwither as the music slows,\nand I...\nI stand with a melody echoing in my head,\na chanting,\na chorus,\na prayer.\n\nEvery beat feels like a needle in the heart,\nyet safer than letting the guard fall apart.\nMy masquerade doesn't drop;\nit has merged,\na refuge from all emotion.\nOnce inseparable devotion,\nnow in vain, every breath\nI take with caution."
+            },
+            {
+                number: "XIII",
+                title: "Walls",
+                excerpt: "These walls are better than humans, or so I say.",
+                body: "These walls are better than humans,\nor so I say.\nHumans are afraid,\nthese walls are not.\n\nThey see me weep,\nand keep no distance.\nEmotions they lack,\nyet they have my back.\n\nThey see my rage,\nthey see my will to die,\nand yet they do not cry.\nThey watch my sorrow,\ncarry echoes of hope I borrowed.\n\nThey don't grow tired of me,\nthey are not like humans, you see.\nThey never turn away,\nnever close the door on me.\n\nTell me, are walls kinder than people,\nor am I just safer unseen?"
+            },
+            {
+                number: "XIV",
+                title: "Crimes",
+                excerpt: "Wither away in time, for I am weary of my crimes.",
+                body: "Wither away in time,\nfor I am weary of my crimes.\nCrimes committed in honesty,\nwith modesty\nand the price I paid.\nA simple life was all I craved.\n\nIn no time, I found myself at the altar,\npleading for shelter.\nToo late, the priest told me:\nwe do not take in prisoners of time.\n\nAnd I withered into the wind,\nfor I was too tired\nto commit another crime."
+            },
+            {
+                number: "XV",
+                title: "Gratitude",
+                excerpt: "You show gratitude, what do you know about love?",
+                body: "You show gratitude,\nWhat do you know about love,\nHow I was killed by my own thoughts\nin multitudes,\nHow I convinced myself it's not loneliness but solitude.\n\nLoved you with what I had,\nYou said this is not worthy, it's all bad,\nAnd that made me sad,\nLoved you with all I had.\n\nOn empty roads, I stood still,\nDid you see my will?\nHow I stayed all the time,\nWhile you were committing crimes,\nAnd I was alone and making rhymes.\n\nHow I craved for death,\nHow I craved for love,\nHow I loved your hate,\nIn the aftermath of what happened\nI still stayed.\n\nSomewhere in my heart I still love you,\nAnd I can tell you I have only loved a few.\nStill hope that you will come back running,\nAnd people call me \"you are funny\" —\nI still think there was love and you did love me,\nHow delusional am I, you see?\n\nYour appreciation killed me,\nHow I was dying did you realise?\nI loved you and you saw that in my eyes,\nStill mistaking my loneliness\nfor solitude.\nWith hope, ache and love\nI am still living in multitude.\n\nWhat do I do of your gratitude,\nThe way you didn't fight to stay,\nThe way you left, and I craved.\nWhat do you know about my love,\nWhat do you know about staying when it hurts.\nTake a shovel and dig my grave,\nI am done being brave."
+            },
+            {
+                number: "XVI",
+                title: "If Art Survives",
+                excerpt: "Reckless shield of steel, a masked self behind the wheel.",
+                body: "Reckless shield of steel,\nA masked self behind the wheel,\nA silent urge to lose control,\nA darker wish that takes its toll.\n\nIn fractured thought and numbing still,\nA mind that bends against its will,\nWhere body slows and senses part,\nAnd questions rise of art and heart.\n\nWho remains when all is still?\nThe voice, the void, the fragile will —\nFor who can tell, when all has ceased,\nIf art survives... or kills the artist."
+            },
+            {
+                number: "XVII",
+                title: "The Bridge",
+                excerpt: "I stood at crossroads, staring across a destiny I could not find.",
+                body: "I stood at crossroads, staring across a destiny I could not find,\na bridge, my only way to the other side.\n\nI burned it and swallowed the ashes.\n\nNow I burn with what remains:\neverything I lost,\nand everything I dreamed of."
+            },
+            {
+                number: "Essay",
+                title: "Art and the Artist",
+                excerpt: "On prima facie or otherwise, can you really differentiate between the art and the artist?",
+                body: "On prima facie or otherwise, can you really differentiate between the art and the artist? Not really. The origin of art? That is true and you know what I am about to say.\n\nOne may look sideways when it comes to the artist, but can we really ignore the art? Well, if so, then ignorance must be a bliss. An artist for all the right reasons carries deep sorrow somewhere around his art, for that must be an origin to his rose tinted yet melancholic dimensions in which he lives. As for me, these all are just mere words, the true worth is layered somewhere between the spaces I am using in between the lines.\n\nThere are ample thoughts that one carries, to illustrate it; that is art. Art in all its forms is just sadness wrapped around small blissful moments where one must carry on, and the artist lives — but the art? Art is immortal. One might be able to kill the artist that lives inside but can he erase the core aspects of his own being? If you ask me, maybe that is not what I reckon, but I guess it is better to kill the artist than the art. The paradox of this chapter lies in the rhetorical questions and the assumptions. As a different point of view, there are endless opportunities to answer these self-originated questions, however, all the attempts will go in vain, as the true one is hidden between the sane and insane.\n\nFor I hide underneath my words, define my worth by what I do and what I don't. Even an artist would agree that words without actions are nothing but a mere attempt to consolidate the being of one another. Actions, on the other hand, live in memories, in time, in longing and in sorrow. However, with that being said, words are powerful — but how? When they are defined by actions. When someone says I love you and does so every day. Artists are no different; they love their art and they do so by creating it.\n\nA small story: once a gardener and later a theatre artist — a man lived in a garden full of flowers. They all used to bloom at midnight, but there was no specific time on days where he was not around. Seldom he used to witness it and on others he missed by a minute. He was an actor who had nowhere to go, no one to turn to, no one to love. But because he had to keep living, he had to eat, and to eat he had to work. Working all day, he used to come back right after midnight and go to his favourite bench with a gut full of food but a heart full of regret that he was unable to witness the bloom.\n\nOn a random Friday, he woke up by the street close to the theatre he used to work. He decided to give up food. He worked but he was famished, yet he went to the garden. Little did he know, it rained. He did not sleep on an empty stomach — he slept in the rain with an empty stomach. He did so for several days until the monsoon got over, and one day with a clear sky he saw his favourite purple flower bloom, and that was enough for him. He died a few days after, as he had grown addicted to the blooming and forgot that food was important. What he failed to do was recognise the difference between need and want.\n\nSo — that is what an artist and art is. Art is an addiction, a desire, a want for the artist. And as for artists? They are the need of the world — a constant reminder of desire, passionate individuals who live by their art and die by their art. Separation between need and want is important for every human being, be it an artist or otherwise, because you can be in love and live for yourself, but you cannot be in love and offer your entire being to the other. Art needs soul. Art needs desire. And most of all, art needs the artist. An artist drowned in art is passion wrapped in obsession. An artist swimming in his art is a man who drowns art in his passion.\n\nWind has taught me to carry people,\nand you taught me how to keep them alive.\n\nArt or the artist?\nArtist and the art."
+            }
+        ];
+
+        const grid = document.getElementById('poemGrid');
+
+        poems.forEach((poem, idx) => {
+            const card = document.createElement('div');
+            card.className = 'poem-card';
+            card.innerHTML = `
+                <div>
+                    <div class="poem-number">${poem.number}</div>
+                    <h3 class="poem-title">${poem.title}</h3>
+                    <p class="poem-excerpt">${poem.excerpt}</p>
+                    <p class="poem-body">${poem.body}</p>
+                </div>
+                <span class="read-more">Read</span>
+            `;
+
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                card.classList.toggle('expanded');
+                if (card.classList.contains('expanded')) {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+
+            grid.appendChild(card);
+        });
+
+        // Close expanded card when clicking outside
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.poem-card.expanded').forEach(card => {
+                card.classList.remove('expanded');
+            });
+        });
+    </script>
+</body>
+</html>
